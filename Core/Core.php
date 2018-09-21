@@ -8,4 +8,4 @@ class Core {
     }
 }
 
-?>x
+?>

@@ -1,6 +1,8 @@
 <?php
-spl_autoload_register(function($class) {
-    include str_replace('\\', '/', $class) . '.php';
-    var_dump($class);
-});
+spl_autoload_register('myAutoloader');
+
+function myAutoloader($class){
+    $path = str_replace('\\','/', $class);
+    include $path.'.php';
+};
 ?>

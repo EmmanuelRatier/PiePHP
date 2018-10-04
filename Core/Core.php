@@ -6,23 +6,23 @@ class Core {
         echo __CLASS__ . " [OK]" . PHP_EOL;
 
         require 'routes.php';
-        $url = str_replace(BASE_URI,'', $_SERVER['REQUEST_URI']);
+        $url = substr($_SERVER['REQUEST_URI'], strlen(BASE_URI));
+
         $router = Router::get($url);
-        var_dump($router);
+
+        $control = "src\Controller\\" . ucfirst($router['controller'])."Controller";
+        $action = ucfirst($router['action'])."Action";
+        var_dump($control, $action, $router);
         
-        $control = ucfirst($_GET['c'])."Controller";
-        $action = ucfirst($_GET['a'])."Action";
-        $dir = str_replace("Core", "src/Controller", __DIR__);
-        var_dump($dir."/".$control);
-       if(is_file($dir."/".$control.".php"))
+       if(!is_null($router))
        {
-           include($dir."/".$control.".php");
            $controller = new $control();
            $controller->$action();
        }
        else
        {
-        include($dir."/"."AppController.php");
+            var_dump($control, $controller, $action, $router);
+           // header("location:" . BASE_URI . '/404');
        }
     }
 }
